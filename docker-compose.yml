@@ -10,11 +10,11 @@ services:
     ports:
       - "80:80"     # The HTTP port
       - "443:443"     # The HTTPS port
-      # - "8080:8080" # The Web UI (enabled by --api) 직접 포트를 노출해서 사용하려면 주석을 해제하고 아니라면 아래에 있는 라벨을 이용해서 도메인으로 접속합니다
+      # - "8080:8080" # The Web UI (enabled by --api), 관리자 UI 접속을 위한 포트,  직접 포트를 노출해서 사용하려면 주석을 해제하고 아니라면 아래에 있는 라벨을 이용해서 도메인으로 접속합니다
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
     labels: # Web UI를 접속하기 위한 것도 트래픽을 통해 처리할 수 있습니다.
-      - "traefik.frontend.rule=Host:traefik.test" # 관리 UI 접속을 위한 도메인. 사용자의 로컬 개발 환경에 맞게 변경해서 사용해야합니다
+      - "traefik.frontend.rule=Host:traefik.test" # Web UI 접속을 위한 도메인. 사용자의 로컬 개발 환경에 맞게 변경해서 사용해야합니다
       - "traefik.frontend.port=8080" # 관리 UI의 포트
 
