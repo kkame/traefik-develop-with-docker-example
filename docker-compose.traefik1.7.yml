@@ -3,10 +3,10 @@ version: '3'
 services:
   traefik:
     restart: always
-    image: traefik:2.5
-    # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    image: traefik:1.7 # 현재는 트래픽 2.x 버전이 출시되었으니 참고해주세요
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
     container_name: traefik
+    #    network_mode: "host"
     ports:
       - "80:80"     # The HTTP port
       - "443:443"     # The HTTPS port
@@ -15,5 +15,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
     labels: # Web UI를 접속하기 위한 것도 트래픽을 통해 처리할 수 있습니다.
-      - "traefik.http.routers.traefik.rule=Host(`localhost`)" # Web UI 접속을 위한 도메인. 사용자의 로컬 개발 환경에 맞게 변경해서 사용해야합니다
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080" # 관리 UI의 포트
+      - "traefik.frontend.rule=Host:traefik.test" # Web UI 접속을 위한 도메인. 사용자의 로컬 개발 환경에 맞게 변경해서 사용해야합니다
+      - "traefik.frontend.port=8080" # 관리 UI의 포트
+
