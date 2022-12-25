@@ -5,7 +5,11 @@ services:
     restart: always
     image: traefik:2.5
     # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true" # 도커를 서비스 공급자로 등록
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.forwardedHeaders.insecure=true" # 외부에서 들어오는 x-forwarded-* 헤더에 대한 허용, 해당 라인 삭제시 외부에서 전달되는 x-forwarded-* 헤더들은 모두 강제로 삭제처리하고 컨테이너에 전달됩니다. 운영/개발 환경에 맞게 설정. https://doc.traefik.io/traefik/routing/entrypoints/#forwarded-headers
     container_name: traefik
     ports:
       - "80:80"     # The HTTP port
